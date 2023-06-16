@@ -1,22 +1,34 @@
-import { useState } from 'react';
-import useDocumentTitle from './hooks/useDocumentTitle';
-
-const Thinghy = () => {
-  useDocumentTitle('Hello!', true);
-  return <div>I am here</div>;
-};
+import { useEffect, useState } from 'react';
+import { Alert } from './components/Alert';
 
 function App() {
-  const [hide, setHide] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (dismissed) return;
+
+    const timeout = setTimeout(() => {
+      console.log('Auto Dismiss');
+      setDismissed(true);
+    }, 2000);
+
+    return () => {
+      console.log('Auto Dismiss cleanup');
+      clearTimeout(timeout);
+    };
+  }, [dismissed, setDismissed]);
+
   return (
     <>
       <h1>Hello, bootcampers</h1>
 
-      {!hide && <Thinghy />}
+      <h2>Self dismissing Alert</h2>
 
-      <button className="btn btn-secondary" onClick={() => setHide(true)}>
-        Click here to restore title
-      </button>
+      {!dismissed && (
+        <Alert variant="info" onDismissed={() => setDismissed(true)}>
+          This message will selfdestruct in 2 seconds!
+        </Alert>
+      )}
     </>
   );
 }
