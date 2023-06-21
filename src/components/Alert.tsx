@@ -1,28 +1,9 @@
-import { FC } from 'react';
-import { clsx } from 'clsx';
+import { FC, ReactNode } from 'react';
 
 interface AlertProps {
-  children: React.ReactNode;
-  className?: string;
-  heading?: React.ReactNode;
-  onDismissed?: () => void;
-  variant?: 'info' | 'warning' | 'danger';
+  children: ReactNode;
 }
 
-const BASE_CLASS_NAME = 'alert';
+const Alert: FC<AlertProps> = ({ children }) => <div role="alert">{children}</div>;
 
-export const Alert: FC<AlertProps> = ({ children, className, heading, onDismissed, variant = 'warning' }) => (
-  <div
-    className={clsx(
-      BASE_CLASS_NAME,
-      `${BASE_CLASS_NAME}-${variant}`,
-      className,
-      onDismissed && `${BASE_CLASS_NAME}-dismissible`,
-    )}
-    role="alert"
-  >
-    {heading && <h4 className={`${BASE_CLASS_NAME}-heading`}>{heading}</h4>}
-    {children}
-    {onDismissed && <button type="button" className="btn-close" aria-label="Close" onClick={onDismissed} />}
-  </div>
-);
+export default Alert;
