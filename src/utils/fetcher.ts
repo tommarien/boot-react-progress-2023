@@ -1,6 +1,14 @@
+// src/utils/fetcher.ts
 import { HttpStatusError } from './http-status-error';
 
-export async function fetcher<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
+interface FetcherResponse<T> {
+  status: number;
+  statusText: string;
+  data: T;
+  headers: Headers;
+}
+
+export async function fetcher<T>(input: RequestInfo | URL, init?: RequestInit): Promise<FetcherResponse<T>> {
   const res = await fetch(input, init);
 
   if (!res.ok) {
@@ -13,7 +21,13 @@ export async function fetcher<T>(input: RequestInfo | URL, init?: RequestInit): 
   }
 
   const data = await res.json();
-  return data;
+
+  return {
+    status: res.status,
+    statusText: res.statusText,
+    headers: res.headers,
+    data,
+  };
 }
 
 export function isAbortError(err: unknown): boolean {

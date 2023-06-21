@@ -1,20 +1,18 @@
 import { useEffect } from 'react';
-import { fetcher, isAbortError } from './utils/fetcher';
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
+import { isAbortError } from './utils/fetcher';
+import { list } from './services/userApiClient';
 
 function App() {
   useEffect(() => {
     const controller = new AbortController();
 
     const fetchUsers = async () => {
-      const users = await fetcher<User[]>(`http://localhost:8080/api/users?_page=1`, {
-        signal: controller.signal,
-      });
+      const users = await list(
+        { pageSize: 4 },
+        {
+          signal: controller.signal,
+        },
+      );
 
       console.log(users);
     };

@@ -1,3 +1,4 @@
+// src/utils/http-status-error.ts
 export class HttpStatusError {
   data?: object;
 
