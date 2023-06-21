@@ -12,6 +12,7 @@
     "clean": "rimraf dist coverage",
     "lint": "concurrently -n tsc,lint, -c \"cyan.bold,green.bold\" \"tsc --noEmit --pretty\" \"eslint src --ext ts,tsx --report-unused-disable-directives\"",
     "preview": "vite preview",
+    "serve:api": "cd api && json-server --watch --port 8080 --routes routes.json db.json",
     "test": "jest"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "jest-environment-jsdom": "^29.5.0",
     "jest-mock": "^29.5.0",
     "jest-watch-typeahead": "^2.2.2",
+    "json-server": "^0.17.3",
     "msw": "^1.2.2",
     "rimraf": "^5.0.1",
     "ts-jest": "^29.1.0",
