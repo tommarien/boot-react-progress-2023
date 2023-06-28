@@ -2,16 +2,20 @@ import { useState } from 'react';
 import Alert from './components/Alert';
 
 function App() {
-  const [alertShown, setAlertVisible] = useState(true);
+  const [dismissed, setDismissed] = useState(false);
+
+  if (dismissed) return null;
+
+  const dismissAlert = () => {
+    setTimeout(() => {
+      setDismissed(true);
+    }, 0);
+  };
+
   return (
-    <>
-      <h1>Welcome</h1>
-      {alertShown && (
-        <Alert heading={<strong>Oops</strong>} onDismiss={() => setAlertVisible(false)}>
-          Something weird happened
-        </Alert>
-      )}
-    </>
+    <Alert variant="info" onDismiss={dismissAlert}>
+      I am here but i dismiss with a delay
+    </Alert>
   );
 }
 
