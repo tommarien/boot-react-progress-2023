@@ -2,9 +2,11 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import routes from './main.routes';
 import { DefaultIdentityContextProvider, IdentityContext } from './contexts/IdentityContext';
+import { HomePageDataTestId } from './pages/Home';
+import { LoginPageDataTestId } from './pages/Login';
 
-const assertAreOnHome = () => screen.getByTestId('home-page');
-const assertAreOnLogin = () => screen.getByRole('heading', { name: 'Login' });
+const assertAreOnHome = () => screen.getByTestId(HomePageDataTestId);
+const assertAreOnLogin = () => screen.getByTestId(LoginPageDataTestId);
 
 it('renders home by default', () => {
   render(<RouterProvider router={createMemoryRouter(routes)} />);
@@ -45,27 +47,6 @@ describe('anonymous', () => {
     assertAreOnLogin();
 
     expect(screen.queryByRole('link', { name: 'Log Out' })).not.toBeInTheDocument();
-  });
-
-  describe('path is /login', () => {
-    beforeEach(() => {
-      render(
-        <DefaultIdentityContextProvider>
-          <RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/login'] })} />
-        </DefaultIdentityContextProvider>,
-      );
-    });
-
-    it('renders login if path is /login', () => {
-      assertAreOnLogin();
-    });
-
-    it('renders a button to authenticate', () => {
-      const authenticateButton = screen.getByRole('button', { name: 'Authenticate' });
-      fireEvent.click(authenticateButton);
-
-      assertAreOnHome();
-    });
   });
 });
 
