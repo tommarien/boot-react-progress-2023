@@ -5,7 +5,9 @@ const Root = () => {
   return (
     <>
       <NavBar data-testid="navbar" />
-      <Outlet />
+      <div className="container-fluid">
+        <Outlet />
+      </div>
     </>
   );
 };
