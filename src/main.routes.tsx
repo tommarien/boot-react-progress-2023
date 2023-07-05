@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Root from './pages/Root';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
+import Logout from './pages/Logout';
 
 const routes: RouteObject[] = [
   {
@@ -16,6 +17,10 @@ const routes: RouteObject[] = [
       {
         path: '/login',
         element: <Login />,
+      },
+      {
+        path: '/logout',
+        element: <Logout />,
       },
       {
         path: '*',

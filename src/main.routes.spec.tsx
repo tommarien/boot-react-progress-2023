@@ -3,7 +3,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import routes from './main.routes';
 import { DefaultIdentityContextProvider, IdentityContext } from './contexts/IdentityContext';
 
-const assertAreOnHome = () => screen.getByRole('heading', { name: 'Home' });
+const assertAreOnHome = () => screen.getByTestId('home-page');
 const assertAreOnLogin = () => screen.getByRole('heading', { name: 'Login' });
 
 it('renders home by default', () => {
