@@ -1,14 +1,15 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import routes from './main.routes';
-import { IdentityContext } from './contexts/IdentityContext';
+import { DefaultIdentityContextProvider, IdentityContext } from './contexts/IdentityContext';
 
-jest.mock('./pages/Login.tsx', () => () => <div data-testid="fake-login-component" />);
+const assertAreOnHome = () => screen.getByRole('heading', { name: 'Home' });
+const assertAreOnLogin = () => screen.getByRole('heading', { name: 'Login' });
 
 it('renders home by default', () => {
   render(<RouterProvider router={createMemoryRouter(routes)} />);
 
-  screen.getByText('Home');
+  assertAreOnHome();
 });
 
 it('renders our navbar component', () => {
@@ -26,7 +27,8 @@ it('renders our navbar component', () => {
 
   // Navigates to home when clicked
   fireEvent.click(brandLink);
-  screen.getByText('Home');
+
+  assertAreOnHome();
 });
 
 describe('anonymous', () => {
@@ -39,9 +41,31 @@ describe('anonymous', () => {
     expect(logInLink).toHaveClass('nav-link');
 
     fireEvent.click(logInLink);
-    screen.getByTestId('fake-login-component');
+
+    assertAreOnLogin();
 
     expect(screen.queryByRole('link', { name: 'Log Out' })).not.toBeInTheDocument();
+  });
+
+  describe('path is /login', () => {
+    beforeEach(() => {
+      render(
+        <DefaultIdentityContextProvider>
+          <RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/login'] })} />
+        </DefaultIdentityContextProvider>,
+      );
+    });
+
+    it('renders login if path is /login', () => {
+      assertAreOnLogin();
+    });
+
+    it('renders a button to authenticate', () => {
+      const authenticateButton = screen.getByRole('button', { name: 'Authenticate' });
+      fireEvent.click(authenticateButton);
+
+      assertAreOnHome();
+    });
   });
 });
 
@@ -62,12 +86,17 @@ describe('authenticated', () => {
 
     expect(screen.queryByRole('link', { name: 'Log In' })).not.toBeInTheDocument();
   });
-});
 
-it('renders login if path is /login', () => {
-  render(<RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/login'] })} />);
+  it('redirects to home if path is /login', () => {
+    render(
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      <IdentityContext.Provider value={{ currentIdentity: 'someone', setCurrentIdentity: () => {} }}>
+        <RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/login'] })} />
+      </IdentityContext.Provider>,
+    );
 
-  screen.getByTestId('fake-login-component');
+    assertAreOnHome();
+  });
 });
 
 it('renders notFound if path is anything else', () => {
