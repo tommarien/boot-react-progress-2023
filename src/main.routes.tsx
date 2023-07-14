@@ -4,6 +4,7 @@ import Root from './pages/Root';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Logout from './pages/Logout';
+import UserDetail from './pages/UserDetail';
 
 const routes: RouteObject[] = [
   {
@@ -21,6 +22,10 @@ const routes: RouteObject[] = [
       {
         path: '/logout',
         element: <Logout />,
+      },
+      {
+        path: '/users/:id',
+        element: <UserDetail />,
       },
       {
         path: '*',

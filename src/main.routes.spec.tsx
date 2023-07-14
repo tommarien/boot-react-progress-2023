@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import routes from './main.routes';
-import { DefaultIdentityContextProvider, IdentityContext } from './contexts/IdentityContext';
+import { IdentityContext } from './contexts/IdentityContext';
 import { HomePageDataTestId } from './pages/Home';
 import { LoginPageDataTestId } from './pages/Login';
 
