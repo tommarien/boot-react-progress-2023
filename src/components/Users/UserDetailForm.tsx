@@ -132,7 +132,7 @@ const UserDetailForm: FC<UserDetailFormProps> = ({ onSubmit }) => {
           Age
         </label>
         <input
-          type="number"
+          type="text"
           className="form-control"
           id="age"
           value={formValues.age}
@@ -141,7 +141,7 @@ const UserDetailForm: FC<UserDetailFormProps> = ({ onSubmit }) => {
           aria-describedby="age-validation-feedback"
         />
         {submitted && Boolean(errors.age) && (
-          <div className="validation-error" id="age-validation-feedback">
+          <div className={styles['validation-error']} id="age-validation-feedback">
             {errors.age}
           </div>
         )}

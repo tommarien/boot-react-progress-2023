@@ -52,7 +52,7 @@ it('renders the form by default', () => {
   expect(emailInput).toBeValid();
 
   const ageInput = within(form).getByLabelText(AGE_LABEL);
-  expect(ageInput).toHaveValue(null);
+  expect(ageInput).toHaveValue('');
   expect(ageInput).toBeValid();
 
   const submitButton = within(form).getByRole('button', { name: SAVE_LABEL });
@@ -160,6 +160,23 @@ describe('validation', () => {
   });
 
   describe('age', () => {
+    it('it renders as invalid when a string', async () => {
+      const onSubmit = jest.fn();
+
+      renderForm({ onSubmit });
+
+      const formValues = { ...buildValidFormValues, age: 'string' };
+      await fill(formValues);
+
+      await userEvent.click(screen.getByRole('button', { name: SAVE_LABEL }));
+
+      const ageInput = screen.getByLabelText(AGE_LABEL);
+      expect(ageInput).toBeInvalid();
+      expect(ageInput).toHaveAccessibleDescription('Please provide a valid age.');
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('it renders as invalid when a decimal', async () => {
       const onSubmit = jest.fn();
 
